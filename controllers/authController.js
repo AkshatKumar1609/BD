@@ -48,6 +48,13 @@ const loginController = async(req,res)=>{
                 message:'Invalid Credentials',
             });
         }
+        //check role
+        if(user.role !== req.body.role){
+            return res.status(500).send({
+                success:false,
+                message:'Role does not match'
+            });
+        }
         //compare password
         const comparedPassword = await bcrypt.compare(req.body.password, user.password);
         if(!comparedPassword){
