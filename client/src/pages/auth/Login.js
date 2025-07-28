@@ -1,7 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Form from '../../components/shared/Form/Form'
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
+  const { user } = useSelector(state => state.auth);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
+
   return (
     <>
       <div className="row g-0">
@@ -12,7 +23,6 @@ const Login = () => {
           <Form formTitle={'Login Page'} submitBtn={'Login'} formType={'login'}/>
         </div>
       </div>
-
     </>
   )
 }
