@@ -13,7 +13,7 @@ export const userLogin = createAsyncThunk(
             if(data.success){
                 localStorage.setItem('token',data.token);
                 console.log("Token stored in localStorage:", data.token);
-                toast.success(data.message);
+                alert(data.message);
                 // REMOVE window.location.replace('/');
             }
             return data;    
@@ -35,7 +35,7 @@ export const userRegister=createAsyncThunk(
                 const {data}=await API.post('/auth/register',{name,role,email,password,organizationName,hospitalName,website,address,phone})
                 if(data?.success){
                     alert("user registered successfully");
-                    toast.success(data.message);
+                    alert(data.message);
                     window.location.replace('/login');
                 }
             }catch(error){
