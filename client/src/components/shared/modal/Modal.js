@@ -1,12 +1,41 @@
 import React, { useState } from 'react'
 import InputType from '../Form/InputType';
+import {useSelector} from 'react-redux';
 import { set } from 'mongoose';
+import API from './../../../services/API';
+
+
 
 const Modal = () => {
     const [inventoryType, setInventoryType] = useState('in');
     const [bloodGroup, setBloodGroup] = useState('');
     const [quantity, setQuantity] = useState(0);
     const [donarEmail, setDonarEmail] = useState('');
+    const {user} = useSelector(state => state.auth);
+    const handleModalSubmit= async ()=>{
+        try {
+            if(!bloodGroup || !quantity){
+                alert('Please provide all fields')
+            }
+            const {data} = await API.post('/inventory/create-inventory',{
+                donarEmail,
+                email:user?.email,
+                organization:user?._id,
+                inventoryType,
+                bloodGroup,
+                quantity
+            })
+            if(data?.success){
+                alert('New record created successfully');
+                window.location.reload();
+            }
+                
+        } catch (error) {
+            window.location.reload();
+            console.log(error)
+        }
+    }
+
     return (
         <>
             <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -46,13 +75,13 @@ const Modal = () => {
                             <InputType labelText={'Donar Email'} labelFor={'donarEmail'} inputType={'email'} value={donarEmail} onChange={(e)=>{
                                 setDonarEmail(e.target.value);
                             }}/>
-                            <InputType labelText={'Quantity'} labelFor={'quantity'} inputType={'number'} value={quantity} onChange={(e)=>{
+                            <InputType labelText={'Quantity (ml)'} labelFor={'quantity'} inputType={'number'} value={quantity} onChange={(e)=>{
                                 setQuantity(e.target.value);
                             }}/>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary">Submit</button>
+                            <button type="button" className="btn btn-primary" onClick={handleModalSubmit}>Submit</button>
                         </div>
                     </div>
                 </div>

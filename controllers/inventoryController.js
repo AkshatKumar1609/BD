@@ -34,7 +34,7 @@ const createInventoryController = async (req,res)=>{
 
 const getInventoryController=async(req,res)=>{
     try{
-        const inventory = await inventoryModel.find({organization:req.body.userId}).populate('donar').populate('hospital').sort({createdAt:-1});
+        const inventory = await inventoryModel.find({organization:req.userId}).populate('donar').populate('hospital').sort({createdAt:-1});
         return res.status(200).send({
             success:true,
             message:'Get All Records Successfully',
