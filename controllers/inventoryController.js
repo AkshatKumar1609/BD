@@ -9,9 +9,9 @@ const createInventoryController = async (req,res)=>{
         if(!user){
             throw  new Error('User not found');
         }
-        if(inventoryType==="in" && user.role!=='donar'){
-            throw new Error('Not a donar account');
-        }
+        // if(inventoryType==="in" && user.role!=='donar'){
+        //     throw new Error('Not a donar account');
+        // }
         if(inventoryType==="out" && user.role!=='hospital'){
             throw new Error('Not a hospital account');
         }
